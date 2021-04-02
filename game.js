@@ -9,6 +9,9 @@ Here, we create and add our "canvas" to the page.
 We also load all of our images.
 */
 
+
+
+
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = 512;
@@ -37,6 +40,8 @@ let monsters = [
 let startTime = Date.now();
 const SECONDS_PER_ROUND = 30;
 let elapsedTime = 0;
+
+var score = 0;
 
 function loadImages() {
 	bg.image = new Image();
@@ -90,6 +95,26 @@ function setupKeyboardListeners() {
 	);
 }
 
+
+function randomlyPlace(axis) {
+	if (axis === "x") {
+	  return Math.floor(Math.random() * canvas.width + 1);
+	} else {
+	  return Math.floor(Math.random() * canvas.height + 1);
+	}
+  }
+
+function heroReturn() {
+	if (hero.x <= 0) {hero.x = canvas.width;}
+		else if (hero.x >= canvas.width) {hero.x = 0;}
+	if (hero.y <= 0) {hero.y = canvas.height;}
+		else if (hero.y >= canvas.height) {hero.y = 0;}
+}
+
+  
+function alert() {
+
+}
 /**
  *  Update game objects - change player position based on key pressed
  *  and check to see if the monster has been caught!
@@ -116,13 +141,18 @@ let update = function () {
 	// Check if player and monster collided. Our images
 	// are 32 pixels big.
 	monsters.forEach((monster) => {
-		if (hero.x <= monster.x + 32 && monster.x <= hero.x + 32 && hero.y <= monster.y + 32 && monster.y <= hero.y + 32) {
+		if (hero.x <= monster.x + 32 
+			&& monster.x <= hero.x + 32 
+			&& hero.y <= monster.y + 32 
+			&& monster.y <= hero.y + 32) {
 			// Pick a new location for the monster.
 			// Note: Change this to place the monster at a new, random location.
-			monster.x = monster.x + 50;
-			monster.y = monster.y + 70;
+			monster.x = canvas.width - randomlyPlace("x");
+			monster.y = canvas.height - randomlyPlace("y");
+			score++;
 		}
 	});
+	heroReturn();
 };
 
 /**
@@ -140,7 +170,9 @@ function render() {
 			ctx.drawImage(monster.image, monster.x, monster.y);
 		}
 	});
-	ctx.fillText(`Seconds Remaining: ${SECONDS_PER_ROUND - elapsedTime}`, 20, 100);
+	ctx.fillText(`Seconds Remaining: ${SECONDS_PER_ROUND - elapsedTime}`, 20, 20);
+	ctx.fillText("Score: " + score , 20, 40);
+	ctx.font = "20px Arial";
 }
 
 /**
