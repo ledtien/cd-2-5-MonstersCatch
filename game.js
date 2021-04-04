@@ -55,7 +55,7 @@ function loadImages() {
 let keyDisable = false;
 let keysPressed = {};
 function setupKeyboardListeners() {
-keyDisable = true;
+	if (keyDisable = true) {
 	document.addEventListener(
 		'keydown',
 		function (e) {
@@ -71,6 +71,7 @@ keyDisable = true;
 		},
 		false
 	);
+}
 }
 
 
@@ -181,6 +182,7 @@ function render() {
 
 
 function main() {
+	
 	update();
 	render();
 
