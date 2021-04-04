@@ -12,6 +12,8 @@ const applicationState = {
   };
 console.log(applicationState)
 
+
+
 function signIn() {
     applicationState.currentUser = document.getElementById('username').value;
     document.getElementById("username").value = " "
